@@ -1,57 +1,55 @@
 package com.example.hibernate.DAO;
 
 import com.example.hibernate.Persistence;
-import com.example.hibernate.entity.Employee;
+import com.example.hibernate.entity.City;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
-public class EmployeeDAOImpl implements EmployeeDAO {
-
+public class CityDAOImpl implements CityDAO {
     @Override
-    public void createEmployee(Employee employee) {
+    public void create(City city) {
         EntityManager entityManager = Persistence.create();
         entityManager.getTransaction().begin();
-        entityManager.persist(employee);
+        entityManager.persist(city);
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.close();
     }
 
     @Override
-    public void updateEmployee(Employee employee, long id) {
+    public List<City> getAllCities() {
         EntityManager entityManager = Persistence.create();
-        employee.setId(id);
+        List<City> cityList = entityManager.createQuery("SELECT C FROM City C", City.class).getResultList();
+        entityManager.close();
+        return cityList;
+    }
+
+    @Override
+    public City getCityById(int id) {
+        EntityManager entityManager = Persistence.create();
+        City city = entityManager.find(City.class, id);
+        entityManager.close();
+        return city;
+    }
+
+    @Override
+    public void updateCity(City city, int id) {
+        city.setCityId(id);
+        EntityManager entityManager = Persistence.create();
         entityManager.getTransaction().begin();
-        entityManager.merge(employee);
+        entityManager.merge(city);
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.close();
     }
 
     @Override
-    public List<Employee> getAllEmployee() {
-        List<Employee> employeeList;
+    public void deleteCity(City city, int id) {
+        city.setCityId(id);
         EntityManager entityManager = Persistence.create();
-        employeeList = entityManager.createQuery("select e from Employee e", Employee.class).getResultList();
-        entityManager.close();
-        return employeeList;
-    }
-
-    @Override
-    public Employee getEmployeeById(long id) {
-        EntityManager entityManager = Persistence.create();
-        Employee employee = entityManager.find(Employee.class, id);
-        entityManager.close();
-        return employee;
-    }
-
-    @Override
-    public void deleteEmployee(Employee employee, long id) {
-        EntityManager entityManager = Persistence.create();
-        employee.setId(id);
         entityManager.getTransaction().begin();
-        entityManager.remove(entityManager.merge(employee));
+        entityManager.remove(entityManager.merge(city));
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.close();
