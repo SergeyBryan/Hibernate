@@ -7,8 +7,9 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
+
     @Override
-    public void addEmployee(Employee employee) {
+    public void createEmployee(Employee employee) {
         EntityManager entityManager = Persistence.create();
         entityManager.getTransaction().begin();
         entityManager.persist(employee);
@@ -32,9 +33,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public List<Employee> getAllEmployee() {
         List<Employee> employeeList;
         EntityManager entityManager = Persistence.create();
-        entityManager.getTransaction().begin();
         employeeList = entityManager.createQuery("select e from Employee e", Employee.class).getResultList();
-        entityManager.getTransaction().commit();
         entityManager.close();
         return employeeList;
     }
@@ -42,9 +41,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public Employee getEmployeeById(long id) {
         EntityManager entityManager = Persistence.create();
-        entityManager.getTransaction().begin();
         Employee employee = entityManager.find(Employee.class, id);
-        entityManager.getTransaction().commit();
         entityManager.close();
         return employee;
     }

@@ -2,9 +2,6 @@ package com.example.hibernate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceContext;
-
-import java.io.IOException;
 
 public class Persistence {
 

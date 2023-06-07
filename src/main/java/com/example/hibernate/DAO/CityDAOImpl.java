@@ -20,7 +20,7 @@ public class CityDAOImpl implements CityDAO {
     @Override
     public List<City> getAllCities() {
         EntityManager entityManager = Persistence.create();
-        List<City> cityList = entityManager.createQuery("SELECT C FROM City C").getResultList();
+        List<City> cityList = entityManager.createQuery("SELECT C FROM City C", City.class).getResultList();
         entityManager.close();
         return cityList;
     }
